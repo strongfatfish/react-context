@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React,{ useContext } from 'react';
+import store  from './store'
+import Input from "./components/Input";
 
 function App() {
+    const { list,setList } = useContext(store);
+    const handleDel = (id) => {
+        const data=list.filter(item => {
+            return item.id !== id
+        });
+        setList([...data])
+    };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+        <Input />
+        <ul className="list-group shadow m-4">
+            {
+                list.map((item) =>{
+                    return <li key={item.text}
+                               className="list-group-item list-group-flush"
+                               onClick={handleDel.bind(null,item.id)}
+                           >
+                                    <span>{item.text}</span>
+                           </li>
+                })
+            }
+        </ul>
     </div>
   );
 }
